@@ -96,13 +96,13 @@
                     <el-col :span="12">
                         <div>
                             <span>Cutoff-High(%)</span>
-                            <el-input style="margin-top: 5px;"></el-input>
+                            <el-input style="margin-top: 5px;" placeholder="Cutoff-High"></el-input>
                         </div>
                     </el-col>
                     <el-col :span="12">
                       <div>
                         <span>Cutoff-Low(%)</span>
-                        <el-input style="margin-top: 5px;"></el-input>
+                        <el-input style="margin-top: 5px;" placeholder="Cutoff-Low"></el-input>
                       </div>
                     </el-col>
                 </el-row>
