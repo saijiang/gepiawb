@@ -267,6 +267,8 @@
 <script>
 import helpVue from './help.vue'
 
+import {rihtListModel} from '@/api/gepia.js'
+
 export default {
   data(){
     return{
@@ -307,39 +309,39 @@ export default {
         ],
 
         rightArr:[
-          {name:'ACC',isselect:false},
-          {name:'BLCA',isselect:false},
-          {name:'BRCA',isselect:false},
-          {name:'CESC',isselect:false},
-          {name:'CHOL',isselect:false},
-          {name:'COAD',isselect:false},
-          {name:'DLBC',isselect:false},
-          {name:'ESCA',isselect:false},
-          {name:'GBM',isselect:false},
-          {name:'HNSC',isselect:false},
-          {name:'KICH',isselect:false},
-          {name:'KIRC',isselect:false},
-          {name:'KIRP',isselect:false},
-          {name:'LAML',isselect:false},
-          {name:'LGG',isselect:false},
-          {name:'LIHC',isselect:false},
-          {name:'LUAD',isselect:false},
-          {name:'LUSC',isselect:false},
-          {name:'MESO',isselect:false},
-          {name:'OV',isselect:false},
-          {name:'PAAD',isselect:false},
-          {name:'PCPG',isselect:false},
-          {name:'PRAD',isselect:false},
-          {name:'READ',isselect:false},
-          {name:'SARC',isselect:false},
-          {name:'SKCM',isselect:false},
-          {name:'STAD',isselect:false},
-          {name:'TGCT',isselect:false},
-          {name:'THCA',isselect:false},
-          {name:'THYM',isselect:false},
-          {name:'UCEC',isselect:false},
-          {name:'UCS',isselect:false},
-          {name:'UVM',isselect:false}
+          // {name:'ACC',isselect:false},
+          // {name:'BLCA',isselect:false},
+          // {name:'BRCA',isselect:false},
+          // {name:'CESC',isselect:false},
+          // {name:'CHOL',isselect:false},
+          // {name:'COAD',isselect:false},
+          // {name:'DLBC',isselect:false},
+          // {name:'ESCA',isselect:false},
+          // {name:'GBM',isselect:false},
+          // {name:'HNSC',isselect:false},
+          // {name:'KICH',isselect:false},
+          // {name:'KIRC',isselect:false},
+          // {name:'KIRP',isselect:false},
+          // {name:'LAML',isselect:false},
+          // {name:'LGG',isselect:false},
+          // {name:'LIHC',isselect:false},
+          // {name:'LUAD',isselect:false},
+          // {name:'LUSC',isselect:false},
+          // {name:'MESO',isselect:false},
+          // {name:'OV',isselect:false},
+          // {name:'PAAD',isselect:false},
+          // {name:'PCPG',isselect:false},
+          // {name:'PRAD',isselect:false},
+          // {name:'READ',isselect:false},
+          // {name:'SARC',isselect:false},
+          // {name:'SKCM',isselect:false},
+          // {name:'STAD',isselect:false},
+          // {name:'TGCT',isselect:false},
+          // {name:'THCA',isselect:false},
+          // {name:'THYM',isselect:false},
+          // {name:'UCEC',isselect:false},
+          // {name:'UCS',isselect:false},
+          // {name:'UVM',isselect:false}
         ],
         rightTextareas:'',
 
@@ -478,12 +480,34 @@ export default {
           else
           this.rightTextareas = this.rightTextareas  + '\n'   +  item.name
       })
+    },
+
+    getRightListModel(){
+      rihtListModel().then((result) => {
+        // console.log(result)
+        if(result.code == 0){
+          var dataArr = []
+          dataArr  = result.data
+          
+          for(let i = 0;  i < dataArr.length ; i++){
+            var names_str = dataArr[i].name
+            var name_arrs = names_str.split('.')
+            console.log(names_str)
+            this.rightArr.push({name:name_arrs[0],isselect:false})
+          }
+        }
+      }).catch((err) => {
+        
+      });
     }
 
 
   },
   components:{
     helpVue
+  },
+  mounted(){
+   this.getRightListModel()
   }
 }
 </script>
