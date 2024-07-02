@@ -238,8 +238,8 @@
               </div>
               <el-input v-model="rightTextareas" type="textarea" style="margin: 8px 0;" rows="4"></el-input>
               <div><span>The plot axis-x order will follow the list.</span></div>
-              <el-button style="background-color: #4bc7a4;color: #fff;margin-top: 10px;">Plot</el-button>
-              <el-button style="background-color: #4bc7a4;color: #fff;margin-top: 10px;">Down</el-button>
+              <el-button class="upBtns" @click="plotAction">Plot</el-button>
+              <el-button class="upBtns" @click="downloadAction">Down</el-button>
             </div>
           <!-- </div> -->
           <!-- <div v-if="rightradio == 2" style="margin-bottom: 10px;">
@@ -267,7 +267,7 @@
 <script>
 import helpVue from './help.vue'
 
-import {rihtListModel} from '@/api/gepia.js'
+import {rihtListModel,analysisModel,analysisNMFModel,downloadModel} from '@/api/gepia.js'
 
 export default {
   data(){
@@ -295,7 +295,9 @@ export default {
         cities:['CIMP-high (18)', 'CIMP-intermediate (27)', 'CIMP-low (31)'],
 
         showHideHelp:false,
-        fileContent: null, // 获取的文件内容
+         rightTextareas:'',
+         fileContent:null, // 获取的文件内容
+      
         leftArr:[
           {name:'Naïve T-Cell',isclick:false,sub:'CCR7\nLEF1\nTCF7\nSELL'},
           {name:'Effector T-Cell',isclick:false,sub:'CX3CR1\nFGFBP2\nFCGR3A'},
@@ -343,7 +345,7 @@ export default {
           // {name:'UCS',isselect:false},
           // {name:'UVM',isselect:false}
         ],
-        rightTextareas:'',
+       
 
         consenObj:{
           maxK:'9',
@@ -354,7 +356,10 @@ export default {
           distance:'pearson',
           pFeature:'1',
           seed:'123456',
-          plot:'png'
+          plot:'png',
+          gene:'',
+          expFiles:''
+         
         },
         clusterAlgObj:[
           {name:'hc',value:'hc'},
@@ -378,7 +383,9 @@ export default {
           clusterNum:'2',
           method:'brunet',
           nrun:'10',
-          seed:'123456'
+          seed:'123456',
+          gene:'',
+          expFiles:''
         },
         methodArr:[
           {name:'brunet',value:'brunet'},
@@ -481,7 +488,7 @@ export default {
           this.rightTextareas = this.rightTextareas  + '\n'   +  item.name
       })
     },
-
+// 右侧列表
     getRightListModel(){
       rihtListModel().then((result) => {
         // console.log(result)
@@ -499,6 +506,42 @@ export default {
       }).catch((err) => {
         
       });
+    },
+    // analysis 事件
+    handleAnalysis(){
+    
+      this.consenObj.gene = this.fileContent
+      this.consenObj.expFiles = this.rightTextareas
+      analysisModel(this.consenObj).then((result) => {
+       
+      }).catch((err) => {
+        
+      });
+
+    },
+  // analysisNMF 事件
+  handleAnalysisNMF(){
+    
+    this.NMFAObj.gene = this.fileContent
+    this.NMFAObj.expFiles = this.rightTextareas
+    analysisNMFModel(this.NMFAObj).then((result) => {
+      
+    }).catch((err) => {
+      
+    });
+
+  },
+
+    plotAction(){
+      if(this.sigmenthradio == '1'){
+         this.handleAnalysis()
+      }
+      else{
+        this.handleAnalysisNMF()
+      }
+    },
+    downloadAction(){
+
     }
 
 
@@ -644,6 +687,11 @@ export default {
   }
 }
 
+.upBtns{
+  background-color: #4bc7a4;
+  color: #fff;
+  margin-top: 10px;
+}
 
 // ::v-deep .el-color-picker--medium .el-color-picker__trigger{
 //   width: 200px;
