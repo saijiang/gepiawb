@@ -295,8 +295,9 @@ export default {
         cities:['CIMP-high (18)', 'CIMP-intermediate (27)', 'CIMP-low (31)'],
 
         showHideHelp:false,
-         rightTextareas:'',
-         fileContent:null, // 获取的文件内容
+        rightTextareas:'',
+        fileContent:null, // 获取的文件内容
+        rightSelectPath:'',
       
         leftArr:[
           {name:'Naïve T-Cell',isclick:false,sub:'CCR7\nLEF1\nTCF7\nSELL'},
@@ -467,14 +468,19 @@ export default {
         if(item.isselect){
           if(this.rightTextareas.length == 0){
             this.rightTextareas = item.name
+            this.rightSelectPath = item.path
           }
-          else
-          this.rightTextareas = this.rightTextareas  + '\n'   +  item.name
+          else{
+            this.rightTextareas = this.rightTextareas  + '\n'   +  item.name
+            this.rightSelectPath = this.rightSelectPath + '\n' + item.path
+          }
+  
         }
       })
     },
     handleRightResetAction(){
       this.rightTextareas = ''
+      this.rightSelectPath = ''
       this.rightArr.map(res =>{
           res.isselect = false
       })
@@ -483,9 +489,13 @@ export default {
       this.rightArr.map(item =>{
         if(this.rightTextareas.length == 0){
             this.rightTextareas = item.name
+            this.rightSelectPath = item.path
           }
-          else
-          this.rightTextareas = this.rightTextareas  + '\n'   +  item.name
+          else{
+            this.rightTextareas = this.rightTextareas  + '\n'   +  item.name
+            this.rightSelectPath = this.rightSelectPath + '\n' + item.path
+          }
+
       })
     },
 // 右侧列表
@@ -500,7 +510,7 @@ export default {
             var names_str = dataArr[i].name
             var name_arrs = names_str.split('.')
             console.log(names_str)
-            this.rightArr.push({name:name_arrs[0],isselect:false})
+            this.rightArr.push({name:name_arrs[0],isselect:false,path:dataArr[i].path})
           }
         }
       }).catch((err) => {
@@ -523,7 +533,7 @@ export default {
   handleAnalysisNMF(){
     
     this.NMFAObj.gene = this.fileContent
-    this.NMFAObj.expFiles = this.rightTextareas
+    this.NMFAObj.expFiles = this.rightSelectPath//this.rightTextareas
     analysisNMFModel(this.NMFAObj).then((result) => {
       
     }).catch((err) => {
