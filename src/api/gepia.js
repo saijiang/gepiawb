@@ -30,7 +30,7 @@ export function downloadModel() {
     headers: {
       isToken: false
     },
-    method: 'get'
+    method: 'post'
   })
 }
 

@@ -541,7 +541,11 @@ export default {
       }
     },
     downloadAction(){
-
+      downloadModel().then((result) => {
+        
+      }).catch((err) => {
+        
+      });
     }
 
 
