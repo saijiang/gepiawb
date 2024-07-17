@@ -267,7 +267,8 @@
 <script>
 import helpVue from './help.vue'
 
-import {rihtListModel,analysisModel,analysisNMFModel,downloadModel} from '@/api/gepia.js'
+import {rihtListModel,analysisModel,analysisNMFModel} from '@/api/gepia.js'
+import moment from "moment";
 
 export default {
   data(){
@@ -311,41 +312,7 @@ export default {
           {name:'Th1-like',isclick:false,sub:'CXCL13\nHAVCR2\nIFNG\nCXCR3\nBHLHE40\nCD4'}
         ],
 
-        rightArr:[
-          // {name:'ACC',isselect:false},
-          // {name:'BLCA',isselect:false},
-          // {name:'BRCA',isselect:false},
-          // {name:'CESC',isselect:false},
-          // {name:'CHOL',isselect:false},
-          // {name:'COAD',isselect:false},
-          // {name:'DLBC',isselect:false},
-          // {name:'ESCA',isselect:false},
-          // {name:'GBM',isselect:false},
-          // {name:'HNSC',isselect:false},
-          // {name:'KICH',isselect:false},
-          // {name:'KIRC',isselect:false},
-          // {name:'KIRP',isselect:false},
-          // {name:'LAML',isselect:false},
-          // {name:'LGG',isselect:false},
-          // {name:'LIHC',isselect:false},
-          // {name:'LUAD',isselect:false},
-          // {name:'LUSC',isselect:false},
-          // {name:'MESO',isselect:false},
-          // {name:'OV',isselect:false},
-          // {name:'PAAD',isselect:false},
-          // {name:'PCPG',isselect:false},
-          // {name:'PRAD',isselect:false},
-          // {name:'READ',isselect:false},
-          // {name:'SARC',isselect:false},
-          // {name:'SKCM',isselect:false},
-          // {name:'STAD',isselect:false},
-          // {name:'TGCT',isselect:false},
-          // {name:'THCA',isselect:false},
-          // {name:'THYM',isselect:false},
-          // {name:'UCEC',isselect:false},
-          // {name:'UCS',isselect:false},
-          // {name:'UVM',isselect:false}
-        ],
+        rightArr:[],
        
 
         consenObj:{
@@ -523,7 +490,15 @@ export default {
       this.consenObj.gene = this.fileContent
       this.consenObj.expFiles = this.rightTextareas
       analysisModel(this.consenObj).then((result) => {
-       
+        if(result.code == 0){
+          this.$message({
+            message: result.msg,
+            type: 'success'
+          });
+        }
+        else{
+          this.$message.error(result.msg);
+        }
       }).catch((err) => {
         
       });
@@ -536,6 +511,15 @@ export default {
     this.NMFAObj.expFiles = this.rightSelectPath//this.rightTextareas
     analysisNMFModel(this.NMFAObj).then((result) => {
       
+      if(result.code == 0){
+        this.$message({
+          message: result.msg,
+          type: 'success'
+        });
+      }
+      else{
+        this.$message.error(result.msg);
+      }
     }).catch((err) => {
       
     });
@@ -551,11 +535,9 @@ export default {
       }
     },
     downloadAction(){
-      downloadModel().then((result) => {
-        
-      }).catch((err) => {
-        
-      });
+ 
+      this.$download.zip('/R/download?delete=false', moment().format('YYYY-MM-DD HH:mm:ss')+".zip")
+      
     }
 
 

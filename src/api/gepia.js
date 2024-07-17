@@ -1,4 +1,8 @@
 import request from '@/utils/request'
+
+
+
+
 // analysis 分析
 export function analysisModel(paramess) {
     return request({
@@ -23,16 +27,11 @@ export function analysisNMFModel(paramess) {
   })
 }
 
-//下载
-export function downloadModel() {
-  return request({
-    url: '/R/download?delete=false',
-    headers: {
-      isToken: false
-    },
-    method: 'post'
-  })
-}
+
+
+
+
+
 
   // 右侧列表
 export function rihtListModel() {
