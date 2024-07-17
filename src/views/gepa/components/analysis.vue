@@ -269,6 +269,7 @@ import helpVue from './help.vue'
 
 import {rihtListModel,analysisModel,analysisNMFModel} from '@/api/gepia.js'
 import moment from "moment";
+import { Loading } from 'element-ui';
 
 export default {
   data(){
@@ -486,10 +487,11 @@ export default {
     },
     // analysis 事件
     handleAnalysis(){
-    
+    let  downloadLoadingInstance =  Loading.service({ text: "", spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)", })
       this.consenObj.gene = this.fileContent
       this.consenObj.expFiles = this.rightTextareas
       analysisModel(this.consenObj).then((result) => {
+        downloadLoadingInstance.close()
         if(result.code == 0){
           this.$message({
             message: result.msg,
@@ -500,17 +502,17 @@ export default {
           this.$message.error(result.msg);
         }
       }).catch((err) => {
-        
+        downloadLoadingInstance.close()
       });
 
     },
   // analysisNMF 事件
   handleAnalysisNMF(){
-    
+    let  downloadLoadingInstance =   Loading.service({ text: "", spinner: "el-icon-loading", background: "rgba(0, 0, 0, 0.7)", })
     this.NMFAObj.gene = this.fileContent
     this.NMFAObj.expFiles = this.rightSelectPath//this.rightTextareas
     analysisNMFModel(this.NMFAObj).then((result) => {
-      
+      downloadLoadingInstance.close()
       if(result.code == 0){
         this.$message({
           message: result.msg,
@@ -521,7 +523,7 @@ export default {
         this.$message.error(result.msg);
       }
     }).catch((err) => {
-      
+      downloadLoadingInstance.close()
     });
 
   },
