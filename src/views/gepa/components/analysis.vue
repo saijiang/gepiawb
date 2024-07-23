@@ -468,8 +468,8 @@ export default {
     },
 // 右侧列表
     getRightListModel(){
-      rihtListModel().then((result) => {
-        // console.log(result)
+       rihtListModel().then((result) => {
+     
         if(result.code == 0){
           var dataArr = []
           dataArr  = result.data
@@ -484,6 +484,10 @@ export default {
       }).catch((err) => {
         
       });
+
+   
+
+
     },
     // analysis 事件
     handleAnalysis(){
